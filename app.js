@@ -1,13 +1,24 @@
 var createError = require('http-errors');
+const cookieSession = require('cookie-session');
+const mongoose = require('mongoose');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const config = require('./config')
+
+mongoose.connect(config.db, {useNewUrlParser: true});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log('db connected');
+});
 
 var indexRouter = require('./routes/index');
 var newsRouter = require('./routes/news');
 var quizRouter = require('./routes/quiz');
 var adminRouter = require('./routes/admin');
+
 
 
 var app = express();
@@ -22,10 +33,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(cookieSession({
+  name: 'session',
+  keys: config.keySession,
+  maxAge: config.maxAgeSession, // 24 hours
+}));
+
 app.use((req, res, next) => {
   res.locals.path = req.path;
   next();
-})
+});
+
 
 app.use('/', indexRouter);
 app.use('/quiz', quizRouter);
