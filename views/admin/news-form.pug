@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+    h1= title
+
+    //if formErrors.errors !== undefined
+    //    each message in formErrors.errors
+    //        p=message
+
+
+
+    form(method="POST")
+        p
+            label Title
+            input(type='text' name='title' value=body.title || '')
+            if formErrors.errors.title !== undefined
+                span=' ' + formErrors.errors.title
+
+        p
+            label Description
+            textarea(name='description')=body.description || ''
+            if formErrors.errors.description !== undefined
+                span=' ' + formErrors.errors.description
+        p
+            input(type='submit' value='Save')
