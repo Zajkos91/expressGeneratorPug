@@ -15,24 +15,48 @@ router.all('*', (req, res, next) => {
 /* GET home page. */
 router
     .get('/', (req, res) => {
+         News.find()
+             .then((data) => {
+                 console.log(data);
+                 res.render('admin/index', { title: 'Admin', data });
+             })
+             .catch((err) => {
+                 console.log(err);
+             })
 
-    res.render('admin/index', { title: 'Admin' });
+
+
+
 })
     .get('/news/add', (req,res) => {
+
     res.render('admin/news-form', {title: 'Add new news', body: {}, formErrors: {}});
     })
     .post('/news/add', (req,res) => {
         const body = req.body;
         const newsData = new News(body);
         const formErrors = newsData.validateSync();
-
+        console.log(formErrors);
         newsData.save()
-            .then(() => console.log('data saved'))
+            .then(() => {
+                res.redirect('/admin');
+                console.log('data saved')})
             .catch((err) => {
+                res.render('admin/news-form', {title: 'Add new news', formErrors, body});
                 console.log(err);
             });
 
-        res.render('admin/news-form', {title: 'Add new news', formErrors, body});
+
+    })
+    .get('/news/delete/:id', (req, res) => {
+        News.findByIdAndDelete(req.params.id)
+            .then(() =>{res.redirect('/admin');}
+
+                )
+            .catch((err) => {
+
+            console.log(err);
+        });
     });
 
 

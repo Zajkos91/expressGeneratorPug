@@ -12,14 +12,14 @@ block content
     form(method="POST")
         p
             label Title
-            input(type='text' name='title' value=body.title || '')
-            if formErrors.errors.title !== undefined
-                span=' ' + formErrors.errors.title
+            input(type='text' name='title' value=body.title || "")
+            if formErrors.errors !== undefined
+                span=' ' + formErrors.errors.title ? formErrors.errors.title : ""
 
         p
             label Description
-            textarea(name='description')=body.description || ''
-            if formErrors.errors.description !== undefined
-                span=' ' + formErrors.errors.description
+            textarea(name='description')=body.description || ""
+            if formErrors.errors !== undefined
+                span=' ' + formErrors.errors.description ? formErrors.errors.description : ""
         p
             input(type='submit' value='Save')

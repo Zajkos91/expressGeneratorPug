@@ -1,5 +1,5 @@
 module.exports = {
-    db: 'mongodb+srv://PiotrZ:qQCTOek6qCO9y0h9@cluster0.ggktvyu.mongodb.net/?retryWrites=true&w=majority',
+    db: '',
     keySession: ['yourKey'],
     maxAgeSession: 24 * 60 * 60 * 1000,
 }
